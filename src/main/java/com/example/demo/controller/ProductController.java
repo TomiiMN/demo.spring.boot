@@ -30,6 +30,12 @@ public class ProductController {
         Product created = productService.create(product);
         return ResponseEntity.status(201).body(new ApiResponse<>("Product created successfully", created));
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Product>> update(@PathVariable int id, @RequestBody Product product) {
+        Product updated = productService.update(id, product);
+        return ResponseEntity.ok(new ApiResponse<>("Product updated successfully", updated));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable int id) {
         productService.delete(id);

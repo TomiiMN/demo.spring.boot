@@ -1,34 +1,37 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Product;
+import com.example.demo.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductService {
-    private List<Product> products = new ArrayList<>(List.of(
-       new Product(1, "Mouse", 1500),
-       new Product(2, "Teclado", 2500),
-       new Product(3, "Monitor", 45000)
-    ));
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<Product> findAll() {
-        return products;
+        return productRepository.findAll();
     }
     public Product findById(int id) {
-        return products.stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
+        return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
     }
     public Product create(Product product) {
-        products.add(product);
-        return product;
+        return productRepository.save(product);
     }
+
+    public Product update(int id, Product updatedProduct) {
+        Product existing = findById(id);
+        existing.setName(updatedProduct.getName());
+        existing.setPrice(updatedProduct.getPrice());
+        return productRepository.save(existing);
+    }
+
     public void delete(int id) {
         Product product = findById(id);
-        products.remove(product);
+        productRepository.delete(product);
     }
 }
