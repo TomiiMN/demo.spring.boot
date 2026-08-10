@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,10 +9,15 @@ import jakarta.persistence.*;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
     private double price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("products")
+    private Category category;
 
     public Product() {}
 
@@ -20,7 +26,7 @@ public class Product {
         this.price = price;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
     public String getName() {
@@ -29,14 +35,17 @@ public class Product {
     public double getPrice() {
         return price;
     }
-
-    public void setId(int id) {
-        this.id = id;
+    public Category getCategory() {
+        return category;
     }
+
     public void setName(String name) {
         this.name = name;
     }
     public void setPrice(double price) {
         this.price = price;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
