@@ -21,7 +21,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse<>("Products retrieved successfully", products));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Product>> getById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<Product>> getById(@PathVariable Long id) {
         Product product = productService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>("Product retrieved successfully", product));
     }
@@ -31,13 +31,17 @@ public class ProductController {
         return ResponseEntity.status(201).body(new ApiResponse<>("Product created successfully", created));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Product>> update(@PathVariable int id, @RequestBody Product product) {
+    public ResponseEntity<ApiResponse<Product>> update(@PathVariable Long id, @RequestBody Product product) {
         Product updated = productService.update(id, product);
         return ResponseEntity.ok(new ApiResponse<>("Product updated successfully", updated));
     }
-
+    @PutMapping("/{productId}/category/{categoryId}")
+    public ResponseEntity<ApiResponse<Product>> assignCategory(@PathVariable Long productId, @PathVariable Long categoryId) {
+        Product updated = productService.assignCategory(productId, categoryId);
+        return ResponseEntity.ok(new ApiResponse<>("Category assigned successfully", updated));
+    }
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.ok(new ApiResponse<>("Product deleted successfully"));
     }
