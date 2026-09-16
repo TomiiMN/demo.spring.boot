@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.demo.dto.CategoryRequestDTO;
 import com.example.demo.dto.CategoryResponseDTO;
 import com.example.demo.dto.ProductRequestDTO;
@@ -18,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class DataSeeder {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataSeeder.class);
 
     @Bean
     CommandLineRunner seedDatabase(CategoryService categoryService, ProductService productService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -38,10 +43,9 @@ public class DataSeeder {
             User regularUser = new User("user@demo.com", passwordEncoder.encode("user1234"), Role.USER);
             userRepository.save(regularUser);
 
-
-            System.out.println("Datos de prueba cargados correctamente");
-            System.out.println("Admin: admin@demo.com / admin1234");
-            System.out.println("User:  user@demo.com / user1234");
+            logger.info("Datos de prueba cargados correctamente");
+            logger.debug("Admin de prueba: admin@demo.com");
+            logger.debug("User de prueba: user@demo.com");
         };
     }
 }
