@@ -1,14 +1,9 @@
 package com.example.demo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.example.demo.dto.CategoryRequestDTO;
 import com.example.demo.dto.CategoryResponseDTO;
 import com.example.demo.dto.ProductRequestDTO;
 import com.example.demo.dto.ProductResponseDTO;
-import com.example.demo.model.Category;
-import com.example.demo.model.Product;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.service.CategoryService;
@@ -18,6 +13,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Configuration
 public class DataSeeder {
@@ -27,6 +24,11 @@ public class DataSeeder {
     @Bean
     CommandLineRunner seedDatabase(CategoryService categoryService, ProductService productService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
+            if (userRepository.count() > 0) {
+                logger.info("Ya existen datos cargados, se omite el seeding");
+                return;
+            }
+
             CategoryResponseDTO perifericos = categoryService.create(new CategoryRequestDTO("Perifericos"));
             CategoryResponseDTO procesadores = categoryService.create(new CategoryRequestDTO("Procesadores"));
 
